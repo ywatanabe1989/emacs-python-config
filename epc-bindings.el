@@ -26,7 +26,7 @@
   (define-key python-mode-map (kbd "M-i")
               'epc-templates-insert-ipdb)
   (define-key python-mode-map (kbd "C-c C-t")
-              'epc-navigation-toggle-source-test)
+              'epc-nav-toggle-source-test)
   (define-key python-mode-map (kbd "C-M-f")
               'epc-flycheck-move-next-error-cyclic)
   (define-key python-mode-map (kbd "<f5>")
