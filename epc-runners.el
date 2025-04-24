@@ -1,11 +1,12 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 14:18:00>
+;;; Timestamp: <2025-04-24 14:49:20>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-python-config/epc-runners.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
-(require 'epc-navigation-repl)
+
+(require 'epc-nav-repl)
 
 (defun epc--runners-copy-region-or-buffer ()
   "Copy region or whole buffer to Python interpreter."
