@@ -1,7 +1,12 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 14:00:54>
+;;; Timestamp: <2025-04-24 14:24:07>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-python-config/epc.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
@@ -12,11 +17,11 @@
 (require 'epc-templates)
 (require 'epc-lint)
 (require 'epc-flycheck)
-(require 'epc-navigation)
-(require 'epc-navigation-repl)
+(require 'epc-nav)
+(require 'epc-nav-repl)
 (require 'epc-repl)
 (require 'epc-runners)
-(require 'epc-hooks)
+(require 'epc-hooks-python)
 (require 'epc-bindings)
 
 ;;;###autoload
@@ -27,9 +32,10 @@
   (epc-lint-setup-formatters)
   (epc-flycheck-setup)
   (epc-bindings-setup-keybindings)
-  (add-hook 'python-mode-hook 'epc-hooks-python-mode-hook))
+  (add-hook 'python-mode-hook 'epc-hooks-python-python-mode-hook))
 
 (epc-core-initialize)
+
 
 (provide 'epc)
 
