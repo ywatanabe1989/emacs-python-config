@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 14:18:55>
+;;; Timestamp: <2025-05-03 15:31:32>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-python-config/epc-templates.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
@@ -24,7 +24,7 @@
 (defvar epc-header-template
   "#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Time-stamp: \"2024-11-03 10:33:13 (ywatanabe)\"
+# Timestamp: \"2024-11-03 10:33:13 (ywatanabe)\"
 # File: placeholder.py
 
 __FILE__ = \"placeholder.py\"
@@ -85,7 +85,7 @@ import argparse
 (defvar epc-functions-and-classes-template
   "\"\"\"Functions & Classes\"\"\"
 def main(args):
-    pass
+    return 0
 
 import argparse
 def parse_args() -> argparse.Namespace:
@@ -220,7 +220,7 @@ axes_flat = axes.flatten()
 (defvar epc-init-template
   "#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Time-stamp: \"2024-10-22 19:51:47 (ywatanabe)\"
+# Timestamp: \"2024-10-22 19:51:47 (ywatanabe)\"
 # File: %s
 
 import os as __os
