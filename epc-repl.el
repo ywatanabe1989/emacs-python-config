@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 14:48:08>
+;;; Timestamp: <2025-05-01 19:13:39>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-python-config/epc-repl.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
@@ -106,42 +106,124 @@
            (or (not footer-pos)
                (> header-pos footer-pos))))))
 
+;; (defun epc-repl-switch-shell-to-ipython ()
+;;   "Start IPython from normal terminal."
+;;   (interactive)
+;;   (when (epc-repl-check-if-in-shell)
+;;     (term-send-raw-string "ipython\C-m")))
+
+;; (defun epc-repl-switch-ipython-to-shell ()
+;;   "Exit from IPython to normal terminal."
+;;   (interactive)
+;;   (when (epc-repl-check-if-in-ipython)
+;;     (term-send-raw-string "exit\C-m")))
+
+;; (defun epc-repl-switch-ipython-to-embed ()
+;;   "Start embedded IPython from IPython."
+;;   (interactive)
+;;   (when (epc-repl-check-if-in-ipython)
+;;     (term-send-raw-string "from IPython import embed\C-m")
+;;     (term-send-raw-string "embed()\C-m")))
+
+;; (defun epc-repl-switch-embed-to-ipython ()
+;;   "Exit from embedded IPython to IPython."
+;;   (interactive)
+;;   (when (epc-repl-check-if-in-embedded-ipython)
+;;     (term-send-raw-string "exit\C-m")))
+
+;; (defun epc-repl-switch-ipython-to-ipdb ()
+;;   "Start iPDB from IPython."
+;;   (interactive)
+;;   (when (epc-repl-check-if-in-ipython)
+;;     (term-send-raw-string "import ipdb; ipdb.set_trace()\C-m")))
+
+;; (defun epc-repl-switch-ipdb-to-ipython ()
+;;   "Exit from iPDB to IPython."
+;;   (interactive)
+;;   (when (epc-repl-check-if-in-ipdb)
+;;     (term-send-raw-string "exit\;; C-m")))
+
+(defun epc-repl-wait-for-status-change
+    (from-status to-status &optional timeout)
+  "Wait until REPL status changes from FROM-STATUS to TO-STATUS.
+Optional TIMEOUT in seconds, defaults to 3."
+  (let ((timeout-val (or timeout 3))
+        (start-time (current-time))
+        (current-status from-status))
+    (while (and (string= current-status from-status)
+                (<
+                 (float-time (time-subtract (current-time) start-time))
+                 timeout-val))
+      (sit-for 0.1)
+      (setq current-status (epc-repl-check-interactive-status)))
+    (string= current-status to-status)))
+
 (defun epc-repl-switch-shell-to-ipython ()
-  "Start IPython from normal terminal."
-  (interactive)
+  "Start IPython from normal terminal with waiting."
   (when (epc-repl-check-if-in-shell)
-    (term-send-raw-string "ipython\C-m")))
+    (term-send-raw-string "ipython\C-m")
+    (epc-repl-wait-for-status-change "shell" "ipython")))
 
 (defun epc-repl-switch-ipython-to-shell ()
-  "Exit from IPython to normal terminal."
-  (interactive)
+  "Exit from IPython to normal terminal with waiting."
   (when (epc-repl-check-if-in-ipython)
-    (term-send-raw-string "exit\C-m")))
+    (term-send-raw-string "exit\C-m")
+    (epc-repl-wait-for-status-change "ipython" "shell")))
 
 (defun epc-repl-switch-ipython-to-embed ()
-  "Start embedded IPython from IPython."
-  (interactive)
+  "Start embedded IPython from IPython with waiting."
   (when (epc-repl-check-if-in-ipython)
     (term-send-raw-string "from IPython import embed\C-m")
-    (term-send-raw-string "embed()\C-m")))
+    (term-send-raw-string "embed()\C-m")
+    (epc-repl-wait-for-status-change "ipython" "embed")))
 
 (defun epc-repl-switch-embed-to-ipython ()
-  "Exit from embedded IPython to IPython."
-  (interactive)
+  "Exit from embedded IPython to IPython with waiting."
   (when (epc-repl-check-if-in-embedded-ipython)
-    (term-send-raw-string "exit\C-m")))
+    (term-send-raw-string "exit\C-m")
+    (epc-repl-wait-for-status-change "embed" "ipython")))
 
 (defun epc-repl-switch-ipython-to-ipdb ()
-  "Start iPDB from IPython."
-  (interactive)
+  "Start iPDB from IPython with waiting."
   (when (epc-repl-check-if-in-ipython)
-    (term-send-raw-string "import ipdb; ipdb.set_trace()\C-m")))
+    (term-send-raw-string "import ipdb; ipdb.set_trace()\C-m")
+    (epc-repl-wait-for-status-change "ipython" "ipdb")))
 
 (defun epc-repl-switch-ipdb-to-ipython ()
-  "Exit from iPDB to IPython."
-  (interactive)
+  "Exit from iPDB to IPython with waiting."
   (when (epc-repl-check-if-in-ipdb)
-    (term-send-raw-string "exit\C-m")))
+    (term-send-raw-string "exit\C-m")
+    (epc-repl-wait-for-status-change "ipdb" "ipython")))
+
+(defun epc-repl-switch-to-shell ()
+  "Switch to shell from any Python REPL environment with transition waiting."
+  (let ((original-window (selected-window))
+        (target-window))
+    (setq target-window (epc-repl-find-window original-window))
+    (if target-window
+        (with-selected-window target-window
+          (let ((current-status (epc-repl-check-interactive-status)))
+            (cond
+             ((string= current-status "shell")
+              (message "Already in shell"))
+
+             ((string= current-status "ipython")
+              (epc-repl-switch-ipython-to-shell)
+              (epc-repl-wait-for-status-change "ipython" "shell"))
+
+             ((string= current-status "embed")
+              (epc-repl-switch-embed-to-ipython)
+              (when
+                  (epc-repl-wait-for-status-change "embed" "ipython")
+                (epc-repl-switch-ipython-to-shell)
+                (epc-repl-wait-for-status-change "ipython" "shell")))
+
+             ((string= current-status "ipdb")
+              (epc-repl-switch-ipdb-to-ipython)
+              (when (epc-repl-wait-for-status-change "ipdb" "ipython")
+                (epc-repl-switch-ipython-to-shell)
+                (epc-repl-wait-for-status-change "ipython" "shell"))))))
+      (message "No suitable Python REPL window found"))))
 
 
 (provide 'epc-repl)
