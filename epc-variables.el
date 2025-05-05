@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 14:19:20>
+;;; Timestamp: <2025-05-01 12:58:17>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-python-config/epc-variables.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (setq python-shell-interpreter (expand-file-name "~/.env/bin/python3"))
 (setq python-indent-offset 4)
@@ -48,6 +49,15 @@
   '(python-pylint python-pycompile python-mypy python-pyright
                   python-ruff)
   "List of Python checkers to disable when using this package.")
+
+(defcustom epc-nav-source-and-test-expressions-alist
+  '(("src" . "tests")
+    ("" . "test_"))
+  "Alist of (source . test) directory and file name patterns.
+The first pair is for directory name replacement.
+The second pair is for file name prefix (empty string for source, 'test_' for test)."
+  :type '(alist :key-type string :value-type string)
+  :group 'epc)
 
 
 (provide 'epc-variables)
