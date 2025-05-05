@@ -1,14 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 14:23:55>
+;;; Timestamp: <2025-05-02 10:06:34>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-python-config/epc-hooks-python.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
-
-;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
-
-;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 (require 'epc-utils)
 (require 'epc-bindings)
@@ -39,7 +35,8 @@
 
 (defun epc--hooks-python-setup-flycheck ()
   "Configure Flycheck for Python files."
-  (flycheck-mode t)
+  (epc-flycheck-setup)
+  ;; (flycheck-mode t)
   (flycheck-select-checker 'python-flake8)
   (when (fboundp 'flycheck-pos-tip-mode)
     (flycheck-pos-tip-mode t))
