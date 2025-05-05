@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 14:00:03>
+;;; Timestamp: <2025-04-30 18:23:46>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-python-config/epc-bindings.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (require 'python)
 
@@ -36,6 +37,7 @@
   "Revert buffer without confirmation."
   (interactive)
   (revert-buffer :ignore-auto :noconfirm))
+
 
 (provide 'epc-bindings)
 
