@@ -1,0 +1,4 @@
+# Claude-Code tooling mirror (rsync target from ~/.claude/to_claude via the
+# now-disabled cld sync mechanism) -- dotfiles/src/.claude/to_claude is the
+# single source of truth; this copy is disposable, never track it.
+docs/to_claude/
